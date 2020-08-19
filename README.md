@@ -20,6 +20,9 @@ A Telegram Torrent (and youtube-dl) Leecher based on [Pyrogram](https://github.c
     ✓ Added /renewme command to clear the downloads which are not deleted automatically.
     ✓ Added support for youtube playlist 😐
     ✓
+    
+# TO-DO
+-   [x] Gdrive file clonning using Gclone
 
 ### Credit goes to SpEcHiDe for his Publicleech repo.
 
@@ -239,6 +242,8 @@ cd torrentleech-gdrive
 For Debian based distros
 ```
 sudo apt install python3
+
+sudo snap install docker
 ```
 Install Docker by following the [official docker docs](https://docs.docker.com/engine/install/debian/)
 

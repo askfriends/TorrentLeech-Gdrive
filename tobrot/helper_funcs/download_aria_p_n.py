@@ -56,6 +56,9 @@ async def aria_start():
     aria2_daemon_start_cmd.append("--max-overall-upload-limit=1K")
     aria2_daemon_start_cmd.append("--split=10")
     aria2_daemon_start_cmd.append(f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}")
+    aria2_daemon_start_cmd.append("--peer-id-prefix=-qB4220-")
+    aria2_daemon_start_cmd.append("--user-agent=qBittorrent/4.2.2")
+    aria2_daemon_start_cmd.append("--peer-agent=qBittorrent/4.2.2")
     #
     LOGGER.info(aria2_daemon_start_cmd)
     #

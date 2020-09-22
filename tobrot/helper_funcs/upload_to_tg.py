@@ -12,7 +12,7 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 LOGGER = logging.getLogger(__name__)
 
 import asyncio
-import pyrogram
+import pyrogram.types as pyrogram
 import os
 import time
 import subprocess
@@ -39,7 +39,7 @@ from tobrot import (
     UPLOAD_AS_DOC
 )
 
-from pyrogram import (
+from pyrogram.types import (
     InputMediaDocument,
     InputMediaVideo,
     InputMediaAudio
@@ -79,7 +79,7 @@ async def upload_to_tg(
         new_m_esg = message
         if not message.photo:
             new_m_esg = await message.reply_text(
-                "Found {} files".format(len(directory_contents)),
+                f"Found {len(directory_contents)} files <a href='tg://user?id={from_user}'>🤒</a>",
                 quote=True
                 # reply_to_message_id=message.message_id
             )
@@ -137,7 +137,7 @@ async def upload_to_tg(
 
 async def upload_to_gdrive(file_upload, message, messa_ge, g_id):
     await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
-    del_it = await message.edit_text("🔊 Now Uploading to ☁️ Cloud!!!")
+    del_it = await message.edit_text(f"<a href='tg://user?id={g_id}'>🔊</a> Now Uploading to ☁️ Cloud!!!")
     #subprocess.Popen(('touch', 'rclone.conf'), stdout = subprocess.PIPE)
     with open('rclone.conf', 'a', newline="\n", encoding = 'utf-8') as fole:
         fole.write("[DRIVE]\n")
@@ -246,6 +246,10 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, e
     #
     if UPLOAD_AS_DOC.upper() == 'TRUE':
         thumb = None
+        thumb_image_path = None
+        if os.path.exists(thumbnail_location):
+        	thumb_image_path = await copy_file(thumbnail_location, os.path.dirname(os.path.abspath(local_file_name)))
+        	thumb = thumb_image_path
         message_for_progress_display = message
         if not edit_media:
             message_for_progress_display = await message.reply_text("starting upload of {}".format(os.path.basename(local_file_name)))
@@ -267,6 +271,8 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, e
         if message.message_id != message_for_progress_display.message_id:
             await message_for_progress_display.delete()
         os.remove(local_file_name)
+        if thumb is not None:
+        	os.remove(thumb)
     else:
         try:
             message_for_progress_display = message
